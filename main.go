@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 // Error Type
@@ -23,7 +22,7 @@ type RespApi struct {
 		Page	int
 		Count	string
 	}
-	Result	interface{}
+	Result	[]interface{}
 }
 
 
@@ -55,11 +54,13 @@ func (c *Client) Get(param string) (interface{},error){
 	var resObject RespApi
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
-		log.Fatal(err)
+		return "", ErrorEmpty
 	}
-
+	if resObject.Info.Count=="0"{
+		return "", ErrorEmpty
+	}
 	fmt.Printf("%+v\n", resObject.Info)
-	return resObject,nil
+	return resObject.Result,nil
 }
 
 func  (c *Client) CheckResponse(resp interface{}) error{
