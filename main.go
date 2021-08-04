@@ -35,7 +35,7 @@ type Client struct{
 func NewClient(token string) *Client {
 	return &Client{Version: 1,Token: token,Url: "https://newapi.critsend.com"}
 }
-func (c *Client) Get(param string,model interface{}) (interface{},error){
+func (c *Client) Get(param string,model []interface{}) (interface{},error){
 	client := http.Client{}
 	req , err := http.NewRequest("GET", "https://newapi.critsend.com/"+param, nil)
 	if err != nil {
@@ -52,6 +52,7 @@ func (c *Client) Get(param string,model interface{}) (interface{},error){
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
 	var resObject RespApi
+	resObject.Result=model
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
 		return "", ErrorEmpty
