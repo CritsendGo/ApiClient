@@ -22,7 +22,7 @@ type RespApi struct {
 		Page	int
 		Count	string
 	}
-	Result 	map[]
+	Result 	map[string]string
 }
 
 
