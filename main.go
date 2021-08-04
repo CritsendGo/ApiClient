@@ -15,6 +15,17 @@ type EmptyResult struct {
 func (e *EmptyResult) Error() string { return e.Name + ": No Result" }
 var ErrorEmpty *EmptyResult
 
+type RespApi struct {
+	Error 	interface{}
+	Info 	struct{
+		QueryId	int
+		Limit 	int
+		Page	int
+		Count	string
+	}
+	Result	interface{}
+}
+
 
 type Client struct{
 	Version 	int
@@ -41,17 +52,20 @@ func (c *Client) Get(param string) (interface{},error){
 		return "", ErrorEmpty
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
-	var resObject interface{}
+	var resObject RespApi
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%+v\n", resObject)
+
+	fmt.Printf("%+v\n", resObject.Info)
 	return resObject,nil
 }
 
 func  (c *Client) CheckResponse(resp interface{}) error{
 	//Return Empty if no value
+
+
 
 	return nil
 
