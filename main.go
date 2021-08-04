@@ -52,7 +52,6 @@ func (c *Client) Get(param string,model []interface{}) (interface{},error){
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
 	var resObject RespApi
-	resObject.Result=model
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
 		return "", ErrorEmpty
