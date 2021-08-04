@@ -22,7 +22,7 @@ type RespApi struct {
 		Page	int
 		Count	string
 	}
-	Result 	map[string]string
+	Result 	[]map[string]string
 }
 
 
@@ -35,7 +35,7 @@ type Client struct{
 func NewClient(token string) *Client {
 	return &Client{Version: 1,Token: token,Url: "https://newapi.critsend.com"}
 }
-func (c *Client) Get(param string,model []interface{}) (interface{},error){
+func (c *Client) Get(param string,model []interface{}) (i []map[string]string,error){
 	client := http.Client{}
 	req , err := http.NewRequest("GET", "https://newapi.critsend.com/"+param, nil)
 	if err != nil {
@@ -48,18 +48,19 @@ func (c *Client) Get(param string,model []interface{}) (interface{},error){
 	//Check if response work
 	if err != nil {
 		fmt.Printf("%+v\n", err)
-		return "", ErrorEmpty
+		return i, ErrorEmpty
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
 	var resObject RespApi
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
-		return "", ErrorEmpty
+		return i, ErrorEmpty
 	}
 	if resObject.Info.Count=="0"{
-		return "", ErrorEmpty
+		return i, ErrorEmpty
 	}
 	fmt.Printf("%+v\n", resObject.Info)
+	i=resObject.Result
 	return resObject.Result,nil
 }
 
