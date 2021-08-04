@@ -35,7 +35,7 @@ type Client struct{
 func NewClient(token string) *Client {
 	return &Client{Version: 1,Token: token,Url: "https://newapi.critsend.com"}
 }
-func (c *Client) Get(param string,model []interface{}) (i []map[string]string,e error){
+func (c *Client) Get(param string) (i []map[string]string,e error){
 	client := http.Client{}
 	req , err := http.NewRequest("GET", "https://newapi.critsend.com/"+param, nil)
 	if err != nil {
