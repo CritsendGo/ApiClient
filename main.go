@@ -24,7 +24,18 @@ type RespApi struct {
 	}
 	Result 	[]map[string]string
 }
+type OptionApi struct {
+	Error 		interface{}
+	Info 		interface{}
+	Title		string
+	History		[]struct{
+		Code 	string
+		Info 	string
+	}
+	Description string
 
+	Parameters	interface{}
+}
 
 type Client struct{
 	Version 	int
@@ -34,6 +45,36 @@ type Client struct{
 
 func NewClient(token string) *Client {
 	return &Client{Version: 1,Token: token,Url: "https://newapi.critsend.com"}
+}
+
+func (c *Client) Insert(param string,data string) (i []map[string]string,e error){
+	return i,e
+}
+func (c *Client) Update(param string,id int,data string) (e error){
+	return e
+}
+func (c *Client) Delete(param string,id int) (e error){
+	return e
+}
+func (c *Client) Info(param string) (i OptionApi,e error){
+	client := http.Client{}
+	req , err := http.NewRequest("GET", "https://newapi.critsend.com/"+param, nil)
+	if err != nil {
+		//Handle Error
+	}
+	req.Header = http.Header{
+		"Authorization": []string{c.Token},
+	}
+	response, err := client.Do(req)
+	//Check if response work
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		return i, ErrorEmpty
+	}
+	responseData, err := ioutil.ReadAll(response.Body)
+	var respOption OptionApi
+	json.Unmarshal(responseData, &respOption)
+	return respOption,e
 }
 func (c *Client) Get(param string) (i []map[string]string,e error){
 	client := http.Client{}
@@ -66,9 +107,5 @@ func (c *Client) Get(param string) (i []map[string]string,e error){
 
 func  (c *Client) CheckResponse(resp interface{}) error{
 	//Return Empty if no value
-
-
-
 	return nil
-
 }
