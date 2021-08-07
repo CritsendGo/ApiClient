@@ -1,1 +1,1 @@
-module "github.com/CritsendTeam/ApiClient"
+module "github.com/CritsendGo/ApiClient"
