@@ -131,7 +131,6 @@ func (c *Client) Get(param string) (i []map[string]string, e error) {
 		return i, ErrorEmpty
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
-	fmt.Println(responseData)
 	var resObject RespApi
 	json.Unmarshal(responseData, &resObject)
 	if err != nil {
